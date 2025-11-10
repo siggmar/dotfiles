@@ -1,3 +1,6 @@
 *.o
 *.gz
 *.gch
+
+.cache/
+compile_commands.json
