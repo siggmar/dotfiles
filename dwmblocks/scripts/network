@@ -1,0 +1,10 @@
+#!/usr/bin/env bash 
+
+no_wifi='✈︎'
+
+wifi_status=$(cat /sys/class/net/wlp4s0/operstate)
+wifi_signal=$(iw dev wlp4s0 link | grep signal)
+
+echo "status: $wifi_status"
+echo "signal: $(wifi_signal | awk '{print $2 " dBm"}')"
+
