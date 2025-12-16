@@ -1,10 +1,18 @@
 #!/usr/bin/env bash 
 
+wifi='🌐'
 no_wifi='✈︎'
 
 wifi_status=$(cat /sys/class/net/wlp4s0/operstate)
-wifi_signal=$(iw dev wlp4s0 link | grep signal)
+wifi_signal=$(iw dev wlp4s0 link | grep -i signal )
 
-echo "status: $wifi_status"
-echo "signal: $(wifi_signal | awk '{print $2 " dBm"}')"
+if [[ "$wifi_status" == "up" ]]; then
+    echo "$wifi"
+elif [[ "$wifi_status" == "down" ]]; then
+    echo "$no_wifi"
+else 
+    echo "broken"
+fi
+    
+# echo "signal: ${wifi_signal}"
 
