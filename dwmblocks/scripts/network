@@ -1,18 +1,18 @@
-#!/usr/bin/env bash 
+#!/usr/bin/env bash
 
-wifi='🌐'
-no_wifi='✈︎'
-
-wifi_status=$(cat /sys/class/net/wlp4s0/operstate)
-wifi_signal=$(iw dev wlp4s0 link | grep -i signal )
+wifi_status=$(cat /sys/class/net/wlp4s0/operstate 2>/dev/null)
 
 if [[ "$wifi_status" == "up" ]]; then
-    echo "$wifi"
-elif [[ "$wifi_status" == "down" ]]; then
-    echo "$no_wifi"
-else 
-    echo "broken"
+    signal=$(iw dev wlp4s0 link 2>/dev/null | awk '/signal/ {print $2}')
+    if (( signal > -50 )); then
+        bars="[###]"
+    elif (( signal > -70 )); then
+        bars="[##]"
+    else
+        bars="[#]"
+    fi
+    echo "$bars"
+else
+    echo "---"
 fi
-    
-# echo "signal: ${wifi_signal}"
 

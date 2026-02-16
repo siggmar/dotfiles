@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+used=$(df / --block-size=1G | awk 'NR==2 {print $3}')
+total=$(df / --block-size=1G | awk 'NR==2 {print $2}')
+echo "${used}G/${total}G"
+
+
+# used_pct=$(df / | awk 'NR==2 {gsub("%","",$5); print $5}')
+# bars=$((used_pct / 10))
+#
+# printf "D ["
+# for ((i=0;i<bars;i++)); do printf "#"; done
+# for ((i=bars;i<10;i++)); do printf "."; done
+# printf "]"
