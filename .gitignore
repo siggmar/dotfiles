@@ -1,0 +1,15 @@
+*.o
+*.gz
+*.gch
+<<<<<<< HEAD
+
+.cache/
+=======
+*.log
+
+.cache/
+
+config.h
+blocks.h
+>>>>>>> fb52053 (inital commit)
+compile_commands.json

@@ -1,0 +1,49 @@
+[general]
+import = [
+    "~/.config/alacritty/themes/themes/alacritty_0_12.toml"
+    ]
+live_config_reload = true
+# General
+working_directory = "None"
+
+[window]
+padding = { x = 0,y = 0 }
+dynamic_padding = true
+decorations = "Full"
+opacity = 1.0
+blur = false
+level = "AlwaysOnTop"
+
+[font]
+normal = { family = "JetBrainsMono Nerd Font", style = "Regular" }
+size = 12
+
+[colors]
+# foreground = "" 
+# brackground = ""
+# cursor = ""
+#
+# [colors.search]
+# matches = { foreground = "", brackground = "" }
+# focused_match = { foreground = "", brackground = "" }
+#
+# [colors.hint]
+# start = { foreground = "", brackground = "" }
+# end = { foreground = "", brackground = "" }
+
+[colors.normal]
+black   = "#181818"
+red     = "#ac4242"
+green   = "#90a959"
+yellow  = "#f4bf75"
+blue    = "#6a9fb5"
+magenta = "#aa759f"
+cyan    = "#75b5aa"
+white   = "#d8d8d8"
+
+[cursor]
+style = { shape = "Block", blinking = "On" }
+thickness = 0.15
+
+[terminal]
+shell = "/bin/zsh"

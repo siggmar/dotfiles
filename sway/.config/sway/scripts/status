@@ -1,0 +1,41 @@
+#!/bin/sh
+
+while true; do
+    # --- Network ---
+    if nmcli -t -f STATE g | grep -q "connected"; then
+        WIFI=$(nmcli -t -f ACTIVE,SSID dev wifi | grep '^yes' | cut -d: -f2)
+
+        if [ -n "$WIFI" ]; then
+            NET="WiFi:$WIFI"
+        else
+            NET="Ethernet"
+        fi
+    else
+        NET="Offline"
+    fi
+
+    # --- Battery ---
+    if [ -d /sys/class/power_supply/BAT0 ]; then
+        BAT=$(cat /sys/class/power_supply/BAT0/capacity)
+        BAT="BAT:${BAT}%"
+    else
+        BAT="BAT:N/A"
+    fi
+
+    # --- Volume (PulseAudio) ---
+    VOL=$(pactl get-sink-volume @DEFAULT_SINK@ | awk '{print $5}' | head -n1)
+    MUTE=$(pactl get-sink-mute @DEFAULT_SINK@ | awk '{print $2}')
+
+    if [ "$MUTE" = "yes" ]; then
+        VOL="VOL:Muted"
+    else
+        VOL="VOL:${VOL}"
+    fi
+
+    # --- Time ---
+    DATE=$(date "+%H:%M")
+
+    echo "$NET | $BAT | $VOL | $DATE"
+
+    sleep 1
+done

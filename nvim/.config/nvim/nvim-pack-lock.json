@@ -1,0 +1,76 @@
+{
+  "plugins": {
+    "blink.cmp": {
+      "rev": "2fcf66aa31e37d4b443c669ec1bf189530dcbf20",
+      "src": "https://github.com/saghen/blink.cmp"
+    },
+    "clipipe": {
+      "rev": "3f10a85d016136a71976d973e6bd7769b0bf4e4e",
+      "src": "https://github.com/bkoropoff/clipipe"
+    },
+    "conform.nvim": {
+      "rev": "086a40dc7ed8242c03be9f47fbcee68699cc2395",
+      "src": "https://github.com/stevearc/conform.nvim"
+    },
+    "fzf.vim": {
+      "rev": "879db51d0965515cdaef9b7f6bdeb91c65d2829e",
+      "src": "https://github.com/junegunn/fzf.vim"
+    },
+    "gruvbox": {
+      "rev": "697c00291db857ca0af00ec154e5bd514a79191f",
+      "src": "https://github.com/morhetz/gruvbox"
+    },
+    "gruvbox-material": {
+      "rev": "d080710b58e605b45db0b0e4288205ca6f7587f0",
+      "src": "https://github.com/sainnhe/gruvbox-material"
+    },
+    "indent-blankline.nvim": {
+      "rev": "005b56001b2cb30bfa61b7986bc50657816ba4ba",
+      "src": "https://github.com/lukas-reineke/indent-blankline.nvim"
+    },
+    "lexima.vim": {
+      "rev": "ab621e4756465c9d354fce88cff2bd1aa7887065",
+      "src": "https://github.com/cohama/lexima.vim"
+    },
+    "lsp_signature.nvim": {
+      "rev": "62cadce83aaceed677ffe7a2d6a57141af7131ea",
+      "src": "https://github.com/ray-x/lsp_signature.nvim"
+    },
+    "lualine.nvim": {
+      "rev": "b8c23159c0161f4b89196f74ee3a6d02cdc3a955",
+      "src": "https://github.com/nvim-lualine/lualine.nvim"
+    },
+    "mason.nvim": {
+      "rev": "7dc4facca9702f95353d5a1f87daf23d78e31c2a",
+      "src": "https://github.com/mason-org/mason.nvim"
+    },
+    "mini.pick": {
+      "rev": "82ec629ca108c7b96b8b9bb733d235b39e137690",
+      "src": "https://github.com/echasnovski/mini.pick"
+    },
+    "nvim-colorizer.lua": {
+      "rev": "a065833f35a3a7cc3ef137ac88b5381da2ba302e",
+      "src": "https://github.com/norcalli/nvim-colorizer.lua"
+    },
+    "nvim-treesitter": {
+      "rev": "42fc28ba918343ebfd5565147a42a26580579482",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter"
+    },
+    "nvim-web-devicons": {
+      "rev": "6e51ca170563330e063720449c21f43e27ca0bc1",
+      "src": "https://github.com/kyazdani42/nvim-web-devicons"
+    },
+    "seoul256.vim": {
+      "rev": "d9a91d8d4e153274e1ecc0ceb05c37f0d0de84d7",
+      "src": "https://github.com/junegunn/seoul256.vim"
+    },
+    "tokyonight.nvim": {
+      "rev": "5da1b76e64daf4c5d410f06bcb6b9cb640da7dfd",
+      "src": "https://github.com/folke/tokyonight.nvim"
+    },
+    "vim-dispatch": {
+      "rev": "a2ff28abdb2d89725192db5b8562977d392a4d3f",
+      "src": "https://github.com/tpope/vim-dispatch"
+    }
+  }
+}

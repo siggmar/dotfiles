@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+temp=$(cat /sys/class/thermal/thermal_zone2/temp)
+
+echo "CPU $((temp / 1000))C"
