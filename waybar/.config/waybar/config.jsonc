@@ -1,16 +1,21 @@
 {
     "layer": "top",
-    "height": 34,
+    "height": 30,
 
     "modules-left": ["sway/workspaces"],
 
-    "modules-center": ["clock"],
+    "modules-center": ["custom/begin", "clock", "custom/end"],
 
     "modules-right": [
-        // "sway/language",
+        "custom/begin",
+        "sway/language",
+        "custom/separator",
         "pulseaudio",
+        "custom/separator",
         "battery",
+        "custom/separator",
         "cpu",
+        "custom/end",
     ],
 
     "sway/workspaces": {
@@ -33,29 +38,54 @@
     },
 
     "clock": {
-        "format": "{:%H:%M %A, %b %d}",
+        "format": "{:%H:%M:%S %A, %b %d}",
+        "interval": 1,
         "tooltip": false,
     },
 
-    // "sway/language": {
-    //     "format": "key: {layout}",
-    //     "tooltip": false
-    // },
+    // Colors:
+    // #f213d1 pink
+    // #ac4242 red
+
+    "sway/language": {
+        "format-en": "<span foreground='#ac4242'>key: US</span>",
+        "format": "<span foreground='#ac4242'>key:</span> <span foreground='#d8d8d8'>{} </span>", // fallback
+        "tooltip": false,
+    },
 
     "pulseaudio": {
-        "format": "vol: {volume}%",
-        "format-muted": "vol: muted",
+        "format": "<span foreground='#ac4242'>vol:</span> <span foreground='#d8d8d8'>{volume}</span>",
+        "format-muted": "<span foreground='#ac4242'>vol:</span> <span foreground='#d8d8d8'>muted</span>",
         "tooltip": false,
     },
 
     "battery": {
         "bat": ["BAT0", "BAT1"],
-        "format": "bat: {capacity}%",
-        "format-plugged": "{capacity}% ",
+        "format": "<span foreground='#ac4242'>bat:</span> <span foreground='#d8d8d8'>{capacity}%</span>",
+        "format-plugged": "<span foreground='#ac4242'>bat:</span> <span foreground='#d8d8d8'>{capacity}% </span>",
+        "format-charging": "<span foreground='#ac4242'>bat:</span> <span foreground='#d8d8d8'>{capacity}% </span>",
     },
 
     "cpu": {
-        "format": "mon: {usage}%",
+        "format": "<span foreground='#ac4242'>mon:</span> <span foreground='#d8d8d8'>{usage}%</span>",
+        "tooltip": false,
+    },
+
+    "custom/separator": {
+        "format": "/",
+        "interval": "once",
+        "tooltip": false,
+    },
+
+    "custom/begin": {
+        "format": "[",
+        "interval": "once",
+        "tooltip": false,
+    },
+
+    "custom/end": {
+        "format": "]",
+        "interval": "once",
         "tooltip": false,
     },
 }

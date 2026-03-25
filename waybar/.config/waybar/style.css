@@ -3,6 +3,7 @@
     border-radius: 0;
     font-family: "JetBrainsMono Nerd Font";
     font-size: 12px;
+    font-weight: bold;
     min-height: 0;
     margin: 0;
     padding: 0;
@@ -14,18 +15,15 @@ window#waybar {
 }
 
 #clock {
-    padding: 0 10px;
+    color: #d8d8d8;
 }
 
-/* #keyboard-state, */
+#sway-language,
 #pulseaudio,
 #battery,
-#cpu {
-    padding: 0 6px;
-}
-
+#cpu,
 #workspaces button {
-    padding: 0 8px;
+    padding: 5px 5px;
     color: #828482;
 }
 
@@ -34,8 +32,22 @@ window#waybar {
 }
 
 button:hover {
-  box-shadow: none; 
-  text-shadow: none;
-  background: none;
-  transition: none;
+    box-shadow: none;
+    text-shadow: none;
+    background: none;
+    transition: none;
+}
+
+#custom-separator {
+    /* color: #828482; */
+}
+
+#custom-begin {
+    /* color: #828482; */
+    margin: 0 8px 0 0;
+}
+
+#custom-end {
+    /* color: #828482; */
+    margin: 0 10px 0 5px; /* top right bottom left */
 }
