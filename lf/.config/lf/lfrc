@@ -1,0 +1,36 @@
+# ~/.config/lf/lfrc
+
+# -----------------------------
+# Navigation
+# -----------------------------
+map j down            # Nach unten
+map k up              # Nach oben
+map l open            # Öffnen / in Ordner wechseln
+map h parent          # Einen Ordner zurück
+map r reload          # Ansicht neu laden
+
+# -----------------------------
+# Versteckte Dateien
+# -----------------------------
+set hidden false      # standardmäßig versteckte Dateien ausblenden
+map H set hidden!; redraw  # H um versteckte Dateien ein-/auszublenden
+
+# -----------------------------
+# Datei/Ordner Aktionen
+# -----------------------------
+map d confirm "rm -rf $f"   # d löscht Datei/Ordner nach Bestätigung
+map y yank $f               # y kopiert Pfad in Zwischenablage
+map p paste                 # p fügt Datei/Ordner ein (falls kopiert)
+
+# -----------------------------
+# Fenster / Shell
+# -----------------------------
+map ! shell                 # ! öffnet Shell
+map q quit                  # q zum Beenden
+
+# -----------------------------
+# Anzeige
+# -----------------------------
+set preview false            # Keine Vorschau (optional)
+set sort name                # Nach Name sortieren
+set hiddenchars .            # Versteckte Dateien beginnen mit .
