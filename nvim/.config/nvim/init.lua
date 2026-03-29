@@ -86,7 +86,6 @@ end)
 
 vim.pack.add({
 	"https://github.com/nvim-treesitter/nvim-treesitter",
-	"https://github.com/mason-org/mason.nvim",
 	"https://github.com/tpope/vim-dispatch",
 	"https://github.com/cohama/lexima.vim", -- auto klammern
 	"https://github.com/ray-x/lsp_signature.nvim", -- function args
@@ -96,6 +95,11 @@ vim.pack.add({
 	"https://github.com/nvim-lualine/lualine.nvim",
 	"https://github.com/norcalli/nvim-colorizer.lua", -- color highlight
 	"https://github.com/stevearc/conform.nvim", -- formatter
+
+	-- Lsp
+	"https://github.com/mason-org/mason.nvim",
+	"https://github.com/mason-org/mason-lspconfig.nvim",
+	"https://github.com/neovim/nvim-lspconfig",
 
 	-- colorschemes
 	"https://github.com/junegunn/seoul256.vim",
@@ -119,6 +123,16 @@ require("nvim-treesitter.configs").setup({
 
 -- mason
 require("mason").setup()
+require("mason-lspconfig").setup({
+	ensure_installed = {
+		"bashls",
+		"lua_ls",
+		"pylsp",
+		"clangd",
+	},
+})
+
+require("lspconfig")
 
 -- color highlight
 require("colorizer").setup()
@@ -199,7 +213,7 @@ require("conform").setup({
 				"false",
 			},
 		},
-		["clang_format"] = {
+		["clang-format"] = {
 			prepend_args = {
 				"-style={"
 					.. "BasedOnStyle: LLVM, "
@@ -245,43 +259,6 @@ vim.o.background = "dark"
 
 local function on_attach(client, bufnr)
 	local _opts = { noremap = true, silent = true, buffer = bufnr }
-
-	-- map("n", "<leader>lf", function()
-	-- 	vim.lsp.buf.format({ async = true })
-	-- end, _opts)
-	-- map("n", "<leader>ca", function()
-	-- 	vim.lsp.buf.code_action()
-	-- end, _opts)
-	-- map("n", "K", function()
-	-- 	vim.lsp.buf.hover()
-	-- end, opts)
-	-- map("n", "<leader>k", function()
-	-- 	vim.diagnostic.open_float()
-	-- end, opts)
-	-- map("n", "gd", function()
-	-- 	vim.lsp.buf.definition()
-	-- end, opts)
-	-- map("n", "gD", function()
-	-- 	vim.lsp.buf.declaration()
-	-- end, opts)
-	-- map("n", "gi", function()
-	-- 	vim.lsp.buf.implementation()
-	-- end, opts)
-	-- map("n", "go", function()
-	-- 	vim.lsp.buf.type_definition()
-	-- end, opts)
-	-- map("n", "gr", function()
-	-- 	vim.lsp.buf.references()
-	-- end, opts)
-	-- map("n", "gs", function()
-	-- 	vim.lsp.buf.signature_help()
-	-- end, opts)
-	-- map("n", "<F2>", function()
-	-- 	vim.lsp.buf.rename()
-	-- end, opts)
-	-- map("n", "<F4>", function()
-	-- 	vim.lsp.buf.code_action()
-	-- end, opts)
 
 	-- diagnostics
 	vim.diagnostic.config({
@@ -383,13 +360,21 @@ vim.lsp.config("python-language-server", {
 	on_attach = on_attach,
 })
 
-vim.lsp.enable("python-language-server")
+vim.lsp.enable("pylsp")
 
-vim.lsp.config("bash-language-server", {
-	cmd = { server .. "bash-language-server" },
-	filetypes = { "bash", "sh" },
+vim.lsp.config("bashls", {
+	cmd = { "bash-language-server", "start" },
+	filetypes = { "sh", "bash" },
+
+	on_attach = on_attach(client, bufnr),
+
 	capabilities = capabilities,
-	on_attach = on_attach,
+
+	-- wichtig, sonst manchmal kein Attach
+	root_dir = function(bufnr, on_dir)
+		local cwd = vim.fn.getcwd()
+		on_dir(cwd)
+	end,
 })
 
-vim.lsp.enable("bash-language-server")
+vim.lsp.enable("bashls")
