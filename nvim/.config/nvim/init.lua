@@ -27,7 +27,7 @@ vim.o.completeopt = "menuone,noinsert,noselect"
 -- display
 -- vim.o.guicursor = "i:block"
 vim.o.number = true
-vim.o.relativenumber = false
+vim.o.relativenumber = true
 vim.o.signcolumn = "number"
 vim.o.colorcolumn = "80"
 vim.o.scrolloff = 8
@@ -95,6 +95,7 @@ vim.pack.add({
 	"https://github.com/nvim-lualine/lualine.nvim",
 	"https://github.com/norcalli/nvim-colorizer.lua", -- color highlight
 	"https://github.com/stevearc/conform.nvim", -- formatter
+	"https://github.com/folke/flash.nvim", -- movement
 
 	-- Lsp
 	"https://github.com/mason-org/mason.nvim",
@@ -106,6 +107,7 @@ vim.pack.add({
 	"https://github.com/sainnhe/gruvbox-material",
 	"https://github.com/morhetz/gruvbox",
 	"https://github.com/folke/tokyonight.nvim",
+	"https://github.com/mellow-theme/mellow.nvim",
 })
 
 -- ######################################### --
@@ -135,7 +137,7 @@ require("mason-lspconfig").setup({
 require("lspconfig")
 
 -- color highlight
-require("colorizer").setup()
+-- require("colorizer").setup() // deprecated vim.tbl_flatten
 
 -- lsp signature
 require("lsp_signature").setup({
@@ -154,6 +156,8 @@ require("ibl").setup({
 		show_end = false,
 	},
 	indent = { char = "│" },
+
+	-- "⁞, ⋮, ┆, ┊, ┋, ┇, │"
 })
 
 require("blink.cmp").setup({
@@ -244,13 +248,37 @@ require("conform").setup({
 	},
 })
 
+-- movement
+require("flash")
+
+map({ "n", "x", "o" }, "s", function()
+	require("flash").jump()
+end, opts)
+
+map({ "n", "x", "o" }, "S", function()
+	require("flash").treesitter()
+end, opts)
+
+map("o", "r", function()
+	require("flash").remote()
+end, opts)
+
+map({ "o", "x" }, "R", function()
+	require("flash").treesitter_search()
+end, opts)
+
+map("c", "<c-s>", function()
+	require("flash").toggle()
+end, opts)
+
 -- colorscheme
 
 -- vim.cmd.colorscheme("seoul256")
--- vim.g.seoul256_background = 234 -- 233 - 239
+vim.g.seoul256_background = 234 -- 233 - 239
 
-vim.cmd.colorscheme("gruvbox-material")
+-- vim.cmd.colorscheme("gruvbox-material")
 -- vim.cmd.colorscheme("tokyonight-night")
+vim.cmd.colorscheme("mellow")
 vim.o.background = "dark"
 
 -- ######################################### --
@@ -259,6 +287,14 @@ vim.o.background = "dark"
 
 local function on_attach(client, bufnr)
 	local _opts = { noremap = true, silent = true, buffer = bufnr }
+
+	map("n", "<leader>ca", function()
+		vim.lsp.buf.code_action()
+	end, _opts)
+
+	map("n", "<leader>k", function()
+		vim.diagnostic.open_float()
+	end, _opts)
 
 	-- diagnostics
 	vim.diagnostic.config({
