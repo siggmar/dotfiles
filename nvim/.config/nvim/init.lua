@@ -1,114 +1,7 @@
--- ######################################### --
---               CONFIG                      --
--- ######################################### --
-
-vim.g.mapleader = ","
-
--- general
--- vim.o.clipboard = "unnamedplus"
-vim.g.clipboard = {
-	name = "wl-clipboard",
-	copy = {
-		["+"] = "wl-copy",
-		["*"] = "wl-copy",
-	},
-	paste = {
-		["+"] = "wl-paste",
-		["*"] = "wl-paste",
-	},
-	cache_enabled = 0,
-}
-
-vim.o.cursorline = false
-vim.o.termguicolors = true
-vim.o.updatetime = 200
-vim.o.completeopt = "menuone,noinsert,noselect"
-
--- display
--- vim.o.guicursor = "i:block"
-vim.o.number = true
-vim.o.relativenumber = true
-vim.o.signcolumn = "number"
-vim.o.colorcolumn = "80"
-vim.o.scrolloff = 8
-vim.o.sidescrolloff = 8
-vim.o.splitbelow = true
-vim.o.splitright = true
-vim.o.pumheight = 6
-vim.o.wrap = false
-
--- search
-vim.o.ignorecase = true
-vim.o.smartcase = true
-
--- tabs / indent
-vim.o.expandtab = true
-vim.o.tabstop = 4
-vim.o.shiftwidth = 4
-vim.o.smartindent = true
-vim.o.autoindent = true
-
--- backup / undo
-vim.o.undofile = true
-vim.o.writebackup = true
-vim.o.swapfile = false
-
--- ######################################### --
---                KEYMAPS                    --
--- ######################################### --
-
-local map = vim.keymap.set
-local opts = { noremap = true, silent = true }
-
--- window navigation
-map("n", "<C-h>", "<C-w>h", opts)
-map("n", "<C-j>", "<C-w>j", opts)
-map("n", "<C-k>", "<C-w>k", opts)
-map("n", "<C-l>", "<C-w>l", opts)
-
-map("n", "<leader>f", function()
-	require("conform").format({
-		async = true,
-		lsp_format = "fallback",
-	})
-end)
-
--- format on save
--- vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
---     callback = function()
---         vim.lsp.buf.format({ async = true })
---     end
--- })
-
--- ######################################### --
---                PLUGINS                    --
--- ######################################### --
-
-vim.pack.add({
-	"https://github.com/nvim-treesitter/nvim-treesitter",
-	"https://github.com/tpope/vim-dispatch",
-	"https://github.com/cohama/lexima.vim", -- auto klammern
-	"https://github.com/ray-x/lsp_signature.nvim", -- function args
-	"https://github.com/lukas-reineke/indent-blankline.nvim",
-	"https://github.com/saghen/blink.cmp",
-	"https://github.com/kyazdani42/nvim-web-devicons",
-	"https://github.com/nvim-lualine/lualine.nvim",
-	"https://github.com/norcalli/nvim-colorizer.lua", -- color highlight
-	"https://github.com/stevearc/conform.nvim", -- formatter
-	"https://github.com/folke/flash.nvim", -- movement
-
-	-- Lsp
-	"https://github.com/mason-org/mason.nvim",
-	"https://github.com/mason-org/mason-lspconfig.nvim",
-	"https://github.com/neovim/nvim-lspconfig",
-
-	-- colorschemes
-	"https://github.com/junegunn/seoul256.vim",
-	"https://github.com/sainnhe/gruvbox-material",
-	"https://github.com/morhetz/gruvbox",
-	"https://github.com/folke/tokyonight.nvim",
-	"https://github.com/mellow-theme/mellow.nvim",
-})
+require("options")
+require("plugins")
+require("keys")
+require("lsp")
 
 -- ######################################### --
 --                SETUP                       --
@@ -121,6 +14,7 @@ require("nvim-treesitter.configs").setup({
 	auto_install = true,
 	highlight = { enable = true },
 	ignore_install = {},
+	modules = {},
 })
 
 -- mason
@@ -131,10 +25,14 @@ require("mason-lspconfig").setup({
 		"lua_ls",
 		"pylsp",
 		"clangd",
+		"rust_analyzer",
+	},
+	handlers = {
+		function(server_name)
+			vim.lsp.enable(server_name)
+		end,
 	},
 })
-
-require("lspconfig")
 
 -- color highlight
 -- require("colorizer").setup() // deprecated vim.tbl_flatten
@@ -176,9 +74,10 @@ require("blink.cmp").setup({
 			"fallback",
 		},
 	},
+
 	completion = {
 		documentation = {
-			auto_show = true,
+			auto_show = false,
 		},
 		list = {
 			selection = {
@@ -228,7 +127,7 @@ require("conform").setup({
 					.. "BreakBeforeBraces: Linux, "
 					.. "BinPackArguments: false, "
 					.. "BinPackParameters: false, "
-					.. "IndentWidth: 4"
+					.. "IndentWidth: 4, "
 					.. "}",
 			},
 		},
@@ -249,27 +148,7 @@ require("conform").setup({
 })
 
 -- movement
-require("flash")
-
-map({ "n", "x", "o" }, "s", function()
-	require("flash").jump()
-end, opts)
-
-map({ "n", "x", "o" }, "S", function()
-	require("flash").treesitter()
-end, opts)
-
-map("o", "r", function()
-	require("flash").remote()
-end, opts)
-
-map({ "o", "x" }, "R", function()
-	require("flash").treesitter_search()
-end, opts)
-
-map("c", "<c-s>", function()
-	require("flash").toggle()
-end, opts)
+require("flash").setup()
 
 -- colorscheme
 
@@ -280,137 +159,3 @@ vim.g.seoul256_background = 234 -- 233 - 239
 -- vim.cmd.colorscheme("tokyonight-night")
 vim.cmd.colorscheme("mellow")
 vim.o.background = "dark"
-
--- ######################################### --
---               LSP                         --
--- ######################################### --
-
-local function on_attach(client, bufnr)
-	local _opts = { noremap = true, silent = true, buffer = bufnr }
-
-	map("n", "<leader>ca", function()
-		vim.lsp.buf.code_action()
-	end, _opts)
-
-	map("n", "<leader>k", function()
-		vim.diagnostic.open_float()
-	end, _opts)
-
-	-- diagnostics
-	vim.diagnostic.config({
-		virtual_text = {
-			prefix = function(diagnostic)
-				local symbols = { [vim.diagnostic.severity.ERROR] = ";; error: " }
-				return symbols[diagnostic.severity] or ""
-			end,
-			spacing = 2,
-			source = "if_many",
-		},
-		float = {
-			border = "",
-			source = true,
-			header = "",
-			prefix = "",
-		},
-		signs = true,
-		underline = { severity = { min = vim.diagnostic.severity.ERROR } },
-		update_in_insert = false,
-		severity_sort = true,
-	})
-end
-
-require("blink.cmp").setup()
-
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
-capabilities.textDocument.completion.completionItem.resolveSupport = {
-	properties = { "documentation", "detail", "additionalTextEdits" },
-}
-
-local server = vim.fn.stdpath("data") .. "/mason/bin/"
-
-vim.lsp.config("clangd", {
-	cmd = {
-		server .. "clangd",
-		"--background-index",
-		"--pch-storage=memory",
-		"--all-scopes-completion",
-		"--pretty",
-		"--header-insertion=never",
-		"-j=4",
-		"--header-insertion-decorators",
-		"--function-arg-placeholders",
-		"--completion-style=detailed",
-	},
-	filetypes = { "c", "cpp", "h", "objc", "objcpp", "cuda" },
-	root_markers = {
-		".clangd",
-		".clang-tidy",
-		".clang-format",
-		"compile_commands.json",
-		"compile_flags.txt",
-		"configure.ac", -- AutoTools
-		".git",
-	},
-	on_attach = on_attach,
-	capabilities = capabilities,
-})
-
-vim.lsp.enable("clangd")
-
-vim.lsp.config("lua_ls", {
-	cmd = { server .. "lua-language-server" },
-	filetypes = { "lua" },
-	root_markers = {
-		".luarc.json",
-		".luarc.jsonc",
-		".luacheckrc",
-		".stylua.toml",
-		"stylua.toml",
-		"selene.toml",
-		"selene.yml",
-		".git",
-	},
-	settings = {
-		Lua = {
-			workspace = {
-				library = vim.api.nvim_get_runtime_file("", true),
-			},
-		},
-	},
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
-
-vim.lsp.enable("lua_ls")
-
-vim.lsp.config("python-language-server", {
-	cmd = { server .. "pylsp" },
-	filetypes = { "py", "python" },
-	settings = {
-		python = {
-			pythonPath = vim.fn.exepath("python3"),
-		},
-	},
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
-
-vim.lsp.enable("pylsp")
-
-vim.lsp.config("bashls", {
-	cmd = { "bash-language-server", "start" },
-	filetypes = { "sh", "bash" },
-
-	on_attach = on_attach(client, bufnr),
-
-	capabilities = capabilities,
-
-	-- wichtig, sonst manchmal kein Attach
-	root_dir = function(bufnr, on_dir)
-		local cwd = vim.fn.getcwd()
-		on_dir(cwd)
-	end,
-})
-
-vim.lsp.enable("bashls")
