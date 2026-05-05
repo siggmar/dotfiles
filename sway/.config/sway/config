@@ -29,25 +29,53 @@ input type:touchpad {
     scroll_factor 0.5
 }
 
+set $lock_cmd grim /tmp/screen.png && swaylock-effects -i /tmp/screen.png \
+    --effect-blur 7x5 \
+    --effect-vignette 0.5:0.5 \
+    --clock \
+    --indicator \
+    --indicator-radius 100 \
+    --indicator-thickness 7 \
+    --ring-color ebdbb2 \
+    --key-hl-color 282828 \
+    --line-color 00000000 \
+    --inside-color 00000088 \
+    --separator-color 00000000 \
+    --fade-in 0.2
 
-set $lock 'grim /tmp/screen.png; corrupter /tmp/screen.png /tmp/screen.png; swaylock -fi /tmp/screen.png --effect-vignette 0.5:0.5 --clock --indicator-radius 100 --indicator-thickness 7  --ring-color ebdbb2 --key-hl-color 282828 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --fade-in 0.2'
-set $lidlock 'swaylock -i ~/wallpapers/city.jpg --effect-vignette 0.5:0.5 --clock --indicator-radius 100 --indicator-thickness 7  --ring-color ebdbb2 --key-hl-color 282828 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --fade-in 0.2'
+set $lidlock swaylock-effects -c 000000 \
+    --effect-blur 7x5 \
+    --clock \
+    --indicator \
+    --indicator-radius 100 \
+    --indicator-thickness 7 \
+    --ring-color ebdbb2 \
+    --key-hl-color 282828 \
+    --inside-color 00000088 \
+    --fade-in 0.2
 
-set $laptop_screen 'eDP-1'
+set $laptop_screen eDP-1
 
-bindswitch --reload --locked lid:on output $laptop_screen disable
-
+bindswitch --reload --locked lid:on exec sh -c "$lock_cmd; swaymsg 'output $laptop_screen disable'"
 bindswitch --reload --locked lid:off output $laptop_screen enable
 
 output * {
     adaptive_sync off
 }
 
-
 output * bg ~/wallpapers/dieterbaby.webp fill
 
-exec swayidle timeout 510 'brightnessctl -s && brightnessctl set 5%' resume 'brightnessctl -r' timeout 540 'grim /tmp/screen.png; corrupter /tmp/screen.png /tmp/screen.png; swaylock -fi /tmp/screen.png --effect-vignette 0.5:0.5 --clock --indicator-radius 100 --indicator-thickness 7  --ring-color ebdbb2 --key-hl-color 282828 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --grace 2 --fade-in 0.2' timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' timeout 900 'systemctl suspend'
-exec swayidle before-sleep $lidlock
+exec swayidle \
+    timeout 510 'brightnessctl -s && brightnessctl set 5%' \
+    resume 'brightnessctl -r' \
+    timeout 540 'sh -c "$lock_cmd"' \
+    timeout 600 'swaymsg "output * dpms off"' \
+    resume 'swaymsg "output * dpms on"' \
+    timeout 900 'systemctl suspend' \
+    before-sleep 'sh -c "$lidlock"'
+
+
+bindsym $mod+Shift+p exec sh -c "$lock_cmd"
 
 bindsym $mod+Return exec $term
 bindsym $mod+w kill
@@ -75,7 +103,7 @@ floating_modifier $mod normal
 bindsym $mod+Shift+c reload
 
 # Exit sway (logs you out of your Wayland session)
-bindsym $mod+Shift+e exec swaynag -t warning -m 'End Sway?' -b 'Yes, exit sway' 'swaymsg exit'
+bindsym $mod+Shift+e exec swaymsg exit
 
 # Move your focus around
 bindsym $mod+$left focus left
@@ -116,10 +144,11 @@ bindsym $mod+Shift+9 move container to workspace number 9
 bindsym $mod+Shift+0 move container to workspace number 10
 
 # Move workspace to different display.
-bindsym $mod+Control+Shift+l move workspace to output right
-bindsym $mod+Control+Shift+h move workspace to output left
-bindsym $mod+Control+Shift+j move workspace to output down
-bindsym $mod+Control+Shift+k move workspace to output up
+# bindsym $mod+Control+Shift+l move workspace to output right
+# bindsym $mod+Control+Shift+h move workspace to output left
+# bindsym $mod+Control+Shift+j move workspace to output down
+# bindsym $mod+Control+Shift+k move workspace to output up
+
 # Note: workspaces can have any name you want, not just numbers.
 # We just use 1-10 as the default.
 #
@@ -161,8 +190,8 @@ default_border none
 smart_gaps on
 gaps inner 5
 gaps outer -1
-gaps bottom 0
-gaps top 0
+gaps bottom -1
+gaps top -1
 
 xwayland enable
 
