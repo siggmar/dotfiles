@@ -1,7 +1,7 @@
-require("options")
-require("plugins")
-require("keys")
-require("lsp")
+require("config.options")
+require("config.plugins")
+require("config.keys")
+require("config.lsp")
 
 -- ######################################### --
 --                SETUP                       --
@@ -13,6 +13,15 @@ require("nvim-treesitter.configs").setup({
 	sync_install = false,
 	auto_install = true,
 	highlight = { enable = true },
+	indent = { enable = true },
+	incremental_selection = {
+		enable = true,
+		keymaps = {
+			init_selection = "gnn",
+			node_incremental = "grn",
+			node_decremental = "grm",
+		},
+	},
 	ignore_install = {},
 	modules = {},
 })
