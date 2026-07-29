@@ -8,13 +8,16 @@
 
     "modules-right": [
         "custom/begin",
-        "sway/language",
+        "backlight",
+        // "sway/language",
         "custom/separator",
         "pulseaudio",
         "custom/separator",
         "battery",
         "custom/separator",
         "cpu",
+        "custom/separator",
+        "memory",
         "custom/end",
     ],
 
@@ -47,6 +50,11 @@
     // #f213d1 pink
     // #ac4242 red
 
+    "backlight": {
+        "device": "intel_backlight",
+        "format": "<span foreground='#ac4242'>bal:</span> <span foreground='#d8d8d8'>{percent}%</span>",
+    },
+
     "sway/language": {
         "format-en": "<span foreground='#ac4242'>key: US</span>",
         "format": "<span foreground='#ac4242'>key:</span> <span foreground='#d8d8d8'>{} </span>", // fallback
@@ -68,6 +76,12 @@
 
     "cpu": {
         "format": "<span foreground='#ac4242'>mon:</span> <span foreground='#d8d8d8'>{usage}%</span>",
+        "tooltip": false,
+    },
+
+    "memory": {
+        "interval": 5,
+        "format": "<span foreground='#ac4242'>mem:</span> <span foreground='#d8d8d8'>{used}G</span>",
         "tooltip": false,
     },
 

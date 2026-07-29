@@ -17,11 +17,13 @@ window#waybar {
 #clock {
     color: #d8d8d8;
 }
-
+#backlight
 #sway-language,
 #pulseaudio,
 #battery,
 #cpu,
+#memory,
+
 #workspaces button {
     padding: 5px 5px;
     color: #828482;
