@@ -176,9 +176,10 @@ visualizer_in_stereo = "yes"
 #buffer_time = "100000"
 #visualizer_output_name = "Pipe"
 visualizer_data_source = /tmp/mpd.fifo
-visualizer_type = ellipse
-##visualizer_type = "wave_filled"
-#visualizer_type = "spectrum"
+# visualizer_type = ellipse
+# visualizer_type = wave
+# visualizer_type = "wave_filled"
+visualizer_type = "spectrum"
 
 #visualizer_look = ●▮
 visualizer_look = "▉▋"
