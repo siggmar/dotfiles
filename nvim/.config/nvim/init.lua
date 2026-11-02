@@ -13,7 +13,7 @@ require("nvim-treesitter.configs").setup({
 	sync_install = false,
 	auto_install = true,
 	highlight = { enable = true },
-	indent = { enable = true },
+	indent = { enable = false },
 	incremental_selection = {
 		enable = true,
 		keymaps = {
@@ -148,9 +148,11 @@ require("conform").setup({
 		python = { "black" },
 		c = { "clang-format" },
 		cpp = { "clang-format" },
+		rust = { "rustfmt" },
 		css = { "prettier" },
 		json = { "prettier" },
 		jsonc = { "prettier" },
+		yaml = { "yamlfmt" },
 
 		["*"] = { "trim_whitespace" },
 	},

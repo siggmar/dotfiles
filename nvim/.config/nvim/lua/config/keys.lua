@@ -7,6 +7,8 @@ local opts = { noremap = true, silent = true }
 
 vim.g.mapleader = ","
 
+map("t", "<Esc>", "<C-\\><C-n>") -- terminal exit
+
 -- window navigation
 map("n", "<C-h>", "<C-w>h", opts)
 map("n", "<C-j>", "<C-w>j", opts)
@@ -16,10 +18,16 @@ map("n", "<C-l>", "<C-w>l", opts)
 map("n", "<leader>bn", ":bnext<CR>", opts)
 map("n", "<leader>bp", ":bprev<CR>", opts)
 
+-- window resize
+map("n", "<Up>", "<C-w>+")
+map("n", "<Down>", "<C-w>-")
+map("n", "<Left>", "<C-w><")
+map("n", "<Right>", "<C-w>>")
+
 map("n", "<leader>f", function()
 	require("conform").format({
 		async = true,
-		lsp_format = "never",
+		lsp_format = "fallback",
 	})
 end)
 
@@ -49,3 +57,12 @@ end, opts)
 map("c", "<c-s>", function()
 	require("flash").toggle()
 end, opts)
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "c",
+	callback = function()
+		map("n", ";m", ":Dispatch make -j 10<CR>", opts)
+		map("n", ";r", ":Dispatch make run -j 10<CR>", opts)
+		map("n", ";c", ":make clean<CR>", opts)
+	end,
+})

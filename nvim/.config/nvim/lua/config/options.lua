@@ -47,6 +47,7 @@ vim.o.tabstop = 4
 vim.o.shiftwidth = 4
 vim.o.smartindent = true
 vim.o.autoindent = true
+vim.o.cindent = true
 
 -- backup / undo
 vim.o.undofile = true
