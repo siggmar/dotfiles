@@ -81,7 +81,7 @@
 
     "memory": {
         "interval": 5,
-        "format": "<span foreground='#ac4242'>mem:</span> <span foreground='#d8d8d8'>{used}G</span>",
+        "format": "<span foreground='#ac4242'>mem:</span> <span foreground='#d8d8d8'>{used:.2f}G</span>",
         "tooltip": false,
     },
 
