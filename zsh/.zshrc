@@ -3,7 +3,7 @@
 
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
-export PICO_SDK_PATH="$HOME/dev/pico/pico-sdk"
+export PICO_SDK_PATH="$HOME/projects/pico/pico-sdk"
 export TERMINAL=alacritty
 
 ZSH_THEME="smt"
